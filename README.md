@@ -12,11 +12,56 @@ dependencies:
     github: watzon/extensions
 ```
 
-# Documentation
+## Documentation
 
-## `Object`
+### `Enumerable(T)`
 
-### `macro equalize(*args, other_class = nil, strict = false)`
+#### `take(count : Int)`
+
+Returns the first _n_ elements of an enumerable and returns an array with the results. Functionally the same as `first`, but `take` requires an argument.
+
+### `Hash(K, V)`
+
+#### `dig(*args)`
+
+Extracts the nested value specified by the sequence of key objects by calling dig at each step, returning nil if any intermediate step is nil.
+
+```crystal
+hash = {"a" => {"b" => {"c" => "c"}}}
+
+hash.dig("a", "b", "c")      # => "c"
+hash.dig("a", "b", "c", "d") # => nil
+```
+#### `map_keys(&block)`
+
+Returns a new hash with all keys converted using the block operation. The block can change a type of keys.
+
+```crystal 
+hash = {:a => 1, :b => 2, :c => 3}
+hash.map_keys { |key| key.to_s } # => {"A" => 1, "B" => 2, "C" => 3}
+```
+
+#### `map_values(&block)`
+
+Returns a new hash with the results of running block once for every value. The block can change a type of values.
+
+```crystal
+hash = {:a => 1, :b => 2, :c => 3}
+hash.map_values { |value| value + 1 } # => {:a => 2, :b => 3, :c => 4}
+```
+
+#### `map_values!(&block)`
+
+Destructively transforms all values using a block. Same as `map_values` but modifies in place. The block cannot change a type of values.
+
+```crystal
+hash = {:a => 1, :b => 2, :c => 3}
+hash.map_values! { |value| value + 1 } # => {:a => 2, :b => 3, :c => 4}
+```
+
+### `Object`
+
+#### `macro equalize(*args, other_class = nil, strict = false)`
 
 Creates a `#==` method for a class or module.
 
@@ -58,7 +103,7 @@ b = SomeClass.new(15)
 puts a == b #=> false
 ```
 
-### `macro alias_method(new_name, existing_method)`
+#### `macro alias_method(new_name, existing_method)`
 
 Creates a method that mirrors an existing method.
 
@@ -71,51 +116,6 @@ end
 alias_method :tweet, :send_tweet
 
 tweet("Hello world")
-```
-
-## `Enumerable(T)`
-
-### `take(count : Int)`
-
-Returns the first _n_ elements of an enumerable and returns an array with the results. Functionally the same as `first`, but `take` requires an argument.
-
-## `Hash(K, V)`
-
-### `dig(*args)`
-
-Extracts the nested value specified by the sequence of key objects by calling dig at each step, returning nil if any intermediate step is nil.
-
-```crystal
-hash = {"a" => {"b" => {"c" => "c"}}}
-
-hash.dig("a", "b", "c")      # => "c"
-hash.dig("a", "b", "c", "d") # => nil
-```
-### `map_keys(&block)`
-
-Returns a new hash with all keys converted using the block operation. The block can change a type of keys.
-
-```crystal 
-hash = {:a => 1, :b => 2, :c => 3}
-hash.map_keys { |key| key.to_s } # => {"A" => 1, "B" => 2, "C" => 3}
-```
-
-### `map_values(&block)`
-
-Returns a new hash with the results of running block once for every value. The block can change a type of values.
-
-```crystal
-hash = {:a => 1, :b => 2, :c => 3}
-hash.map_values { |value| value + 1 } # => {:a => 2, :b => 3, :c => 4}
-```
-
-### `map_values!(&block)`
-
-Destructively transforms all values using a block. Same as `map_values` but modifies in place. The block cannot change a type of values.
-
-```crystal
-hash = {:a => 1, :b => 2, :c => 3}
-hash.map_values! { |value| value + 1 } # => {:a => 2, :b => 3, :c => 4}
 ```
 
 ## Contributing
